@@ -1,0 +1,10 @@
+{
+  "name": "jquery-colander",
+  "version": "0.0.0",
+  "main": "jquery-colander.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
+}
