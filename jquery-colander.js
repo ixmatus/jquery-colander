@@ -4,7 +4,7 @@ define(['jquery'], function(jQuery) {
     $.fn.colander = function( options ) {
       var opts = $.extend({
         url:      this.attr("action"),
-        data:     extract(this),
+        data:     $.fn.colander.extract(this),
         dataType: "json",
         context:  this,
         success:  handleSuccess,
