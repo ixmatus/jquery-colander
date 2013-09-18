@@ -1,7 +1,7 @@
 define(['jquery'], function(jQuery) {
   (function( $ ) {
   
-    $.colander = function( options ) {
+    $.fn.colander = function( options ) {
       var opts = $.extend({
         url:      this.attr("action"),
         data:     extract(this),
@@ -9,7 +9,7 @@ define(['jquery'], function(jQuery) {
         context:  this,
         success:  handleSuccess,
         error:    handleError
-      }, $.colander.defaults, options );
+      }, $.fn.colander.defaults, options );
       
       function doAjax() {
         $.ajax(opts);
@@ -18,11 +18,11 @@ define(['jquery'], function(jQuery) {
       opts.button ? opts.button.click(doAjax) : this.submit(doAjax);
     };
   
-    $.colander.defaults = {
+    $.fn.colander.defaults = {
       button: null
     };
   
-    $.colander.extract = function(t) {
+    $.fn.colander.extract = function(t) {
       var serialized = t.serializeArray();
       
       return _(serialized).reduce(function(acc, field) {
