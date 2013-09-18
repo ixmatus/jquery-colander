@@ -1,6 +1,6 @@
 {
   "name": "jquery-colander",
-  "version": "0.1.0-2",
+  "version": "0.1.0-3",
   "main": "jquery-colander.js",
   "ignore": [
     "**/.*",
