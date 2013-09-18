@@ -5,6 +5,7 @@ define(['jquery'], function(jQuery) {
       var opts = $.extend({
         url:      this.attr("action"),
         data:     $.fn.colander.extract(this),
+        type:     "POST",
         dataType: "json",
         context:  this,
         success:  handleSuccess,
