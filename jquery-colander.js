@@ -34,6 +34,7 @@ define(['jquery'], function(jQuery) {
     };
   
     function handleError(x,s,e) {
+      $(this).children("small.error").remove();
       var err_fields = $.parseJSON(x.responseText);
       for (var fieldk in err_fields) {
         var p = $("input[name="+fieldk+"]").parent();
