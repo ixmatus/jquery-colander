@@ -11,7 +11,7 @@ module.exports = function(grunt) {
   
   grunt.loadNpmTasks('grunt-bumpx');
   
-  //grunt.registerTask('default', ['bump']);
-  grunt.registerTask('test',    ['test'])
+  grunt.registerTask('default', ['bump']);
+  //grunt.registerTask('test',    ['test'])
 }
 
