@@ -1,7 +1,28 @@
-define(['jquery'], function ($) {
+(function( $ ) {
 
-  function extract(target) {
-    var serialized = target.serializeArray();
+  $.fn.colander = function( options ) {
+    var opts = $.extend({
+      url:      this.attr("action"),
+      data:     extract(this),
+      dataType: "json",
+      context:  this,
+      success:  handleSuccess,
+      error:    handleError
+    }, $.fn.colander.defaults, options );
+    
+    function doAjax() {
+      $.ajax(opts);
+    }
+    
+    opts.button ? opts.button.click(doAjax) : this.submit(doAjax);
+  };
+
+  $.fn.colander.defaults = {
+    button: null
+  };
+
+  $.fn.colander.extract = function(t) {
+    var serialized = t.serializeArray();
     
     return _(serialized).reduce(function(acc, field) {
       if (field.name.slice(0,1) != "_") {
@@ -9,9 +30,9 @@ define(['jquery'], function ($) {
       }
       return acc;
     }, {});
-  }
+  };
 
-  function handle_error(x,s,e) {
+  function handleError(x,s,e) {
     // Remove any prior error messages
     $(this).children("small.error").remove();
     
@@ -21,29 +42,12 @@ define(['jquery'], function ($) {
       var p = $("input[name="+fieldk+"]").parent();
       var c = p.children("small");
       var m = '<small class="error">'+err_fields[fieldk]+'</small>';
-      c.length > 0 ? c.replaceWith(m) : p.prepend(m);
+      c.length > 0 ? c.replaceWith(m) : p.append(m);
     }
-  }
-
-  function handle_success(d,s,x) {
-    $(this).children("small.error").remove();
-  }
-
-  function handle_submit(succ, err) {
-    return (function(e) {
-      $.ajax({
-        url: e.attr("action"),
-        data: extract(e),
-        dataType: "json",
-        context: e,
-        success: succ ? succ : handle_success,
-        error: err ? err : handle_error
-      });
-      return false;    
-    });
-  }
-
-  return function(succ=undefined, err=undefined) {
-    $("#deform").submit(handle_submit(succ, err));
   };
-});
+
+  function handleSuccess(d,s,x) {
+    $(this).children("small.error").remove();
+  };
+
+}( jQuery ));
