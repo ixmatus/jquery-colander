@@ -38,7 +38,7 @@ define(['jquery'], function(jQuery) {
       $(this).children("small.error").remove();
       
       // Get new messages
-      var err_fields = $.parseJSON(s.responseText);
+      var err_fields = $.parseJSON(x.responseText);
       for (var fieldk in err_fields) {
         var p = $("input[name="+fieldk+"]").parent();
         var c = p.children("small");
