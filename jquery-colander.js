@@ -1,10 +1,20 @@
 define(['jquery'], function(jQuery) {
   (function( $ ) {
-  
+    
+    $.fn.extractSerialize = function(t) {
+      var serialized = t.serializeArray();
+      return _(serialized).reduce(function(acc, field) {
+        if (field.name.slice(0,1) != "_") {
+          acc[field.name] = field.value;
+        }
+        return acc;
+      }, {});
+    };
+    
     $.fn.colander = function( options ) {
+      var form = this;
       var opts = $.extend({
         url:      this.attr("action"),
-        data:     $.fn.colander.extract(this),
         type:     "POST",
         dataType: "json",
         context:  this,
@@ -13,27 +23,18 @@ define(['jquery'], function(jQuery) {
       }, $.fn.colander.defaults, options );
       
       function doAjax() {
-        $.ajax(opts);
+        $.ajax($.extend(opts, {
+          data: $.fn.extractSerialize(form)
+        }));
       }
       
-      opts.button ? opts.button.click(doAjax) : this.submit(doAjax);
+      opts.button ? opts.button.click(doAjax) : form.submit(doAjax);
     };
   
     $.fn.colander.defaults = {
       button: null
     };
-  
-    $.fn.colander.extract = function(t) {
-      var serialized = t.serializeArray();
-      
-      return _(serialized).reduce(function(acc, field) {
-        if (field.name.slice(0,1) != "_") {
-          acc[field.name] = field.value;
-        }
-        return acc;
-      }, {});
-    };
-  
+    
     function handleError(x,s,e) {
       $(this).children("small.error").remove();
       var err_fields = $.parseJSON(x.responseText);
@@ -48,6 +49,5 @@ define(['jquery'], function(jQuery) {
     function handleSuccess(d,s,x) {
       $(this).children("small.error").remove();
     };
-  
   }( jQuery ));
 })
